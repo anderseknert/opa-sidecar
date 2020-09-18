@@ -36,3 +36,15 @@ spec:
             # problems and errors right away.
             "--log-level=error"
           ]
+          # OPA (when run with the -rootless image tag) does not require any
+          # special privileges and does not write data to disk. We can thus
+          # apply the most strict securityContext available.
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 12000
+            runAsGroup: 12000
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - all
