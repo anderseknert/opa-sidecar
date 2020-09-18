@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      containers:
+        - name: opa
+          # There is really no need to ever run OPA as root, so the rootless
+          # container should be considered the default. Do note however that
+          # the default container is very slim - if you need to exec into the
+          # container or run normal UNIX tools for debugging, use the `-debug`
+          # suffix instead.
+          image: docker.io/openpolicyagent/opa:opa:0.23.2-rootless
+          # Purely informational - we expose port 8181 for the OPA REST API,
+          # and 8282 for diagnostics (/health and /metrics). This separation
+          # allows us to expose the diagnostics endpoints without allowing
+          # external access to other OPA endpoints.
+          ports:
+            - 8181
+            - 8282
+          # Start the OPA server with minimal configuration.
+          args: [
+            "run",
+            "--server",
+            "--ignore=.*",
+            # Expose /health and /metrics endpoints on a separate port,
+            # allowing tools like Prometheus to scrape them without having
+            # access to other OPA endpoints.
+            "--diagnostic-addr=:8282",
+            # Logging at info level is essentially enabling access logging.
+            # While occasionally useful the decision log festure alrady offers
+            # a much richer logging system, and since info level is obviousky
+            # chatty it will likely make it more difficult to spot real
+            # problems and errors right away.
+            "--log-level=error"
+          ]
