@@ -45,6 +45,20 @@ spec:
             # by default is 30 seconds).
             "--shutdown-grace-period=25"
           ]
+          # Configure liveness and readiness probes
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8181
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health?bundle=true
+              port: 8181
+              scheme: HTTP
+            timeoutSeconds: 15
           # Optionally, use the kubernetes downward API to inject properties
           # from the pod or container environment. The values for these can then
           # be retrieved and used from inside rego policies using
