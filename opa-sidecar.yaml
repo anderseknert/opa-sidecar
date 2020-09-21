@@ -25,17 +25,43 @@ spec:
             "run",
             "--server",
             "--ignore=.*",
+            # Bind OPA only to localhost to ensure we avoid unecessary
+            # exposure of the OPA API outside of the pod. We can still
+            # reach the diagnostic endpoints from the config option below.
+            "--addr=localhost:8181",
             # Expose /health and /metrics endpoints on a separate port,
             # allowing tools like Prometheus to scrape them without having
             # access to other OPA endpoints.
             "--diagnostic-addr=:8282",
             # Logging at info level is essentially enabling access logging.
             # While occasionally useful the decision log festure alrady offers
-            # a much richer logging system, and since info level is obviousky
-            # chatty it will likely make it more difficult to spot real
-            # problems and errors right away.
-            "--log-level=error"
+            # a much richer logging system, and since info level is chatty it
+            # will likely make it more difficult to spot real problems and
+            # errors right away.
+            "--log-level=error",
+            # Number of seconds to wait for graceful shutdonw before terminating
+            # forcefully (default 10 seconds). Set somewhere close to the
+            # terminationGracePeriodSeconds value configured for the pod (which
+            # by default is 30 seconds).
+            "--shutdown-grace-period=25"
           ]
+          # Optionally, use the kubernetes downward API to inject properties
+          # from the pod or container environment. The values for these can then
+          # be retrieved and used from inside rego policies using
+          # opa.runtim().env["ENV_VAR_NAME"]
+          variables:
+            - name: APP_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           # OPA (when run with the -rootless image tag) does not require any
           # special privileges and does not write data to disk. We can thus
           # apply the most strict securityContext available.
