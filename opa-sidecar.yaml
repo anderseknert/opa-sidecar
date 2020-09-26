@@ -24,6 +24,9 @@ spec:
           args: [
             "run",
             "--server",
+            # If sourcing policies or data from the file system, ignore
+            # any hidden files as these are most likely not meant to be
+            # read by OPA.
             "--ignore=.*",
             # Bind OPA only to localhost to ensure we avoid unecessary
             # exposure of the OPA API outside of the pod. We can still
@@ -34,7 +37,7 @@ spec:
             # access to other OPA endpoints.
             "--diagnostic-addr=:8282",
             # Logging at info level is essentially enabling access logging.
-            # While occasionally useful the decision log festure alrady offers
+            # While occasionally useful the decision log feature already offers
             # a much richer logging system, and since info level is chatty it
             # will likely make it more difficult to spot real problems and
             # errors right away.
