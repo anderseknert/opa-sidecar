@@ -48,20 +48,27 @@ spec:
             # by default is 30 seconds).
             "--shutdown-grace-period=25"
           ]
-          # Configure liveness and readiness probes
+          # Configure liveness and readiness probes. If downloading a large
+          # dataset as part of the bundle you may want to adjust the value of
+          # initialDelaySeconds accordingly. The default value of timeoutSeconds
+          # of 1 may also be increased somewhat - for any other settings the
+          # defaults are usually fine.
           livenessProbe:
             httpGet:
               path: /health
-              port: 8181
+              port: 8282
               scheme: HTTP
             initialDelaySeconds: 15
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
+              # Make sure to include bundle loading as part of accepted
+              # readiness condition
               path: /health?bundle=true
-              port: 8181
+              port: 8282
               scheme: HTTP
-            timeoutSeconds: 15
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
           # Optionally, use the kubernetes downward API to inject properties
           # from the pod or container environment. The values for these can then
           # be retrieved and used from inside rego policies using
