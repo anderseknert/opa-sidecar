@@ -41,6 +41,10 @@ spec:
             # a much richer logging system, and since info level is chatty it
             # will likely make it more difficult to spot real problems and
             # errors right away.
+            # NOTE: If running with "--set=decision_logs.console=true" then
+            # --log-level MUST be set to info at minimum or else decision logs
+            # won't be printed to the console. See ticket
+            # https://github.com/open-policy-agent/opa/issues/2733 for tracking.
             "--log-level=error",
             # Number of seconds to wait for graceful shutdonw before terminating
             # forcefully (default 10 seconds). Set somewhere close to the
