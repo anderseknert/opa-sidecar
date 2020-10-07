@@ -73,6 +73,26 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 15
             timeoutSeconds: 5
+          # These values will obviously differ in most setups, but these
+          # provide a good baseline. When allocating resources for OPA
+          # one should take the following into account:
+          # * Memory - OPA itself requires something like 10-20Mi - the rest
+          # depends entirely on how much data OPA needs to keep in memory
+          # for it's internal in-memory data source (anything you can import
+          # in your policy like import data.xxx.yyy). A good rule of thumb is
+          # to check the size of the data serialized to JSON and multiply that
+          # by 20 to get an approximation of how much memory to allocate.
+          # * CPU - these numbers depends on so many factors, like hardware used,
+          # number of OPA instances, complexity of policy, and so on, that the
+          # only honest answer is "test and measure". The numbers below however
+          # probably a good starting point for that.
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "125m"
+            limits:
+              memory: "256Mi"
+              cpu: "700m"
           # Optionally, use the kubernetes downward API to inject properties
           # from the pod or container environment. The values for these can then
           # be retrieved and used from inside rego policies using
