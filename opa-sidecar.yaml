@@ -51,6 +51,20 @@ spec:
             # terminationGracePeriodSeconds value configured for the pod (which
             # by default is 30 seconds).
             "--shutdown-grace-period=25"
+            #
+            # OPTIONAL or experimental options
+            #
+            # "--h2c"
+            # Use h2c (i.e. HTTP2 without TLS). Note that few clients support
+            # this, and the benefits are not clear.
+            #
+            # --skip-version-check
+            # Skip reporting version. As this information is useful to the OPA
+            # project it is recommended to leave on. If you have very strict
+            # requirements around privacy, or you have egress traffic to the
+            # internet blocked skipping this could however be desired.
+            # See https://www.openpolicyagent.org/docs/latest/privacy/
+            #
           ]
           # Configure liveness and readiness probes. If downloading a large
           # dataset as part of the bundle you may want to adjust the value of
