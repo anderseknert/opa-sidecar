@@ -12,7 +12,7 @@ spec:
           # the default container is very slim - if you need to exec into the
           # container or run normal UNIX tools for debugging, use the `-debug`
           # suffix instead.
-          image: docker.io/openpolicyagent/opa:opa:0.24.0-rootless
+          image: docker.io/openpolicyagent/opa:opa:0.25.2-rootless
           # Purely informational - we expose port 8181 for the OPA REST API,
           # and 8282 for diagnostics (/health and /metrics). This separation
           # allows us to expose the diagnostics endpoints without allowing
