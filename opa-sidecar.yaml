@@ -46,11 +46,17 @@ spec:
             # won't be printed to the console. See ticket
             # https://github.com/open-policy-agent/opa/issues/2733 for tracking.
             "--log-level=error",
-            # Number of seconds to wait for graceful shutdonw before terminating
+            # Number of seconds to wait for graceful shutdown before terminating
             # forcefully (default 10 seconds). Set somewhere close to the
             # terminationGracePeriodSeconds value configured for the pod (which
             # by default is 30 seconds).
-            "--shutdown-grace-period=25"
+            "--shutdown-grace-period=25",
+            # If using external load balancers or ingress controllers such as
+            # nginx, give them time to register the removal of endpoints
+            # associated with pods shutting down or else there is a risk that
+            # traffic is directed to a service which is already shut down.
+            # For details, see https://github.com/open-policy-agent/opa/issues/2764
+            "--shutdown-wait-period=10"
             #
             # OPTIONAL or experimental options
             #
