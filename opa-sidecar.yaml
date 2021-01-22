@@ -18,8 +18,8 @@ spec:
           # allows us to expose the diagnostics endpoints without allowing
           # external access to other OPA endpoints.
           ports:
-            - 8181
-            - 8282
+            - containerPort: 8181
+            - containerPort: 8282
           # Start the OPA server with minimal configuration.
           args: [
             "run",
@@ -117,7 +117,7 @@ spec:
           # from the pod or container environment. The values for these can then
           # be retrieved and used from inside rego policies using
           # opa.runtim().env["ENV_VAR_NAME"]
-          variables:
+          env:
             - name: APP_NAME
               valueFrom:
                 fieldRef:
