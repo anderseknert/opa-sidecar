@@ -2,6 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: not-important
+  annotations:
+    # From kubernetes version 1.21.0 it's a good idea to mark the application
+    # (i.e not OPA) container as the default, allowing commands such as kubectl
+    # exec and kubectl logs without having to provide the "-c <container_name>"
+    # flag with each request.
+    kubectl.kubernetes.io/default-container: not-opa-container
 spec:
   template:
     spec:
