@@ -18,7 +18,10 @@ spec:
           # the default container is very slim - if you need to exec into the
           # container or run normal UNIX tools for debugging, use the `-debug`
           # suffix instead.
-          image: docker.io/openpolicyagent/opa:opa:0.27.1-rootless
+          # NOTE: As part of the Docker Open Source Program, The OPA
+          # organization (including all sub-projects) Docker images are not
+          # subject to rate limiting.
+          image: docker.io/openpolicyagent/opa:opa:0.30.1-rootless
           # Purely informational - we expose port 8181 for the OPA REST API,
           # and 8282 for diagnostics (/health and /metrics). This separation
           # allows us to expose the diagnostics endpoints without allowing
@@ -122,7 +125,7 @@ spec:
           # Optionally, use the kubernetes downward API to inject properties
           # from the pod or container environment. The values for these can then
           # be retrieved and used from inside rego policies using
-          # opa.runtim().env["ENV_VAR_NAME"]
+          # opa.runtime().env["ENV_VAR_NAME"]
           env:
             - name: APP_NAME
               valueFrom:
