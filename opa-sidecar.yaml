@@ -21,7 +21,7 @@ spec:
           # NOTE: As part of the Docker Open Source Program, The OPA
           # organization (including all sub-projects) Docker images are not
           # subject to rate limiting.
-          image: docker.io/openpolicyagent/opa:opa:0.41.0-rootless
+          image: docker.io/openpolicyagent/opa:0.41.0-rootless
           # Purely informational - we expose port 8181 for the OPA REST API,
           # and 8282 for diagnostics (/health and /metrics). This separation
           # allows us to expose the diagnostics endpoints without allowing
